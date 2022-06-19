@@ -1,17 +1,15 @@
-
-
 spring:
   redis:
-    host: ${REDIS_HOST:master.xxxxxx.cache.amazonaws.com}
-    port    : ${REDIS_PORT:6379}
-    username: ${REDIS_USERNAME:default}
-    password: ${REDIS_PASSWORD:xxxxxx}
-    cluster :
-      nodes: ${REDIS_NODES:replica.xxxxxx.cache.amazonaws.com:6379}
-    ssl     : ${REDIS_SSL:true}
-    mode: ${REDIS_MODE:master_replica}
+    host: ${REDIS_HOST:clustercfg.crm-subsys-dev-redis-replication-01.vbqfxc.apse1.cache.amazonaws.com}
+    port: ${REDIS_PORT:6379}
+    username: ${REDIS_USERNAME:ddsdevuser}
+    password: ${REDIS_PASSWORD:DdsJOODevOm&#987}
+    cluster:
+      nodes: ${REDIS_NODES:clustercfg.crm-subsys-dev-redis-replication-01.vbqfxc.apse1.cache.amazonaws.com:6379}
+    ssl: true
+    mode: standalone
 
 server:
-  port   : ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8080}
   servlet:
     context-path: ${SERVER_CONTEXT_PATH:/redis-tester}

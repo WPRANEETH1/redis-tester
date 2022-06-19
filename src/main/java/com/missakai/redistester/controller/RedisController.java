@@ -1,6 +1,5 @@
 package com.missakai.redistester.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.missakai.redistester.dto.KeyValuePairDto;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +23,8 @@ public class RedisController {
     }
 
     @GetMapping("/{key}")
-    public JsonNode get(@PathVariable String key){
-        return (JsonNode) redisTemplate.opsForValue().get(key);
+    public Object get(@PathVariable String key){
+        return redisTemplate.opsForValue().get(key);
     }
 
 }
