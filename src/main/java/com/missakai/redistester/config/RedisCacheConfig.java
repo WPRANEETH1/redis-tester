@@ -12,23 +12,14 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-/**
- * @author Missaka Iddamalgoda (@MissakaI-ObjectOne)
- */
 @Configuration
 @ConditionalOnClass({RedisCacheConfiguration.class})
-@ConditionalOnBean({CacheProperties.class,ObjectMapper.class})
+@ConditionalOnBean({CacheProperties.class, ObjectMapper.class})
 public class RedisCacheConfig {
 
-    /**
-     * Creates a RedisCacheConfiguration with the support for String Keys and Object Values which will be serialized and stored as
-     * a JSON and vice versa.
-     *
-     * @param objectMapper DI of the default Spring's ObjectMapper Bean
-     * */
     @Bean
     @Primary
-    public RedisCacheConfiguration defaultCacheConfig(ObjectMapper objectMapper){
+    public RedisCacheConfiguration defaultCacheConfig(ObjectMapper objectMapper) {
         GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
         return RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))

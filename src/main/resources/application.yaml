@@ -1,13 +1,10 @@
 spring:
   redis:
-    host: ${REDIS_HOST:clustercfg.crm-subsys-dev-redis-replication-01.vbqfxc.apse1.cache.amazonaws.com}
+    host: ${REDIS_HOST:clustercfg.*****.cache.amazonaws.com}
     port: ${REDIS_PORT:6379}
-    username: ${REDIS_USERNAME:ddsdevuser}
-    password: ${REDIS_PASSWORD:DdsJOODevOm&#987}
-    cluster:
-      nodes: ${REDIS_NODES:clustercfg.crm-subsys-dev-redis-replication-01.vbqfxc.apse1.cache.amazonaws.com:6379}
+    username: ${REDIS_USERNAME:dds***}
+    password: ${REDIS_PASSWORD:Dds***87}
     ssl: true
-    mode: standalone
 
 server:
   port: ${SERVER_PORT:8080}

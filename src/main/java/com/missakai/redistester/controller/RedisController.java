@@ -4,26 +4,27 @@ import com.missakai.redistester.dto.KeyValuePairDto;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * @author Missaka Iddamalgoda (@MissakaI-ObjectOne)
- */
 @RestController
 @RequestMapping("/api")
 public class RedisController {
 
-    RedisTemplate<String,Object> redisTemplate;
+    RedisTemplate<String, Object> redisTemplate;
 
-    public RedisController(RedisTemplate<String,Object> redisTemplate) {
+    public RedisController(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     @PutMapping
-    public void setEx(@RequestBody KeyValuePairDto dto){
-        redisTemplate.opsForValue().set(dto.getKey(),dto.getValue());
+    public void setEx(@RequestBody KeyValuePairDto dto) {
+        System.out.println(dto);
+        redisTemplate.opsForValue().set(dto.getKey(), dto.getValue());
     }
 
     @GetMapping("/{key}")
-    public Object get(@PathVariable String key){
+    public Object get(@PathVariable String key) {
+        System.out.println(key);
+        System.out.println("******");
+        System.out.println(redisTemplate.opsForValue().get(key));
         return redisTemplate.opsForValue().get(key);
     }
 
