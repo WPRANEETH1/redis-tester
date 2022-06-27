@@ -1,6 +1,8 @@
 package com.missakai.redistester.config;
 
 import io.lettuce.core.ReadFrom;
+import io.lettuce.core.cluster.ClusterClientOptions;
+import io.lettuce.core.cluster.ClusterTopologyRefreshOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,7 @@ import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -41,11 +44,19 @@ public class RedisWriteToMasterReadFromReplicaConfiguration {
         if (redisProperties.isSsl())
             clientConfigBuilder.useSsl();
 
-        if (Objects.nonNull(redisProperties.getClientName()) && !redisProperties.getClientName().isBlank())
-            clientConfigBuilder.clientName(redisProperties.getClientName());
+        ClusterTopologyRefreshOptions topologyRefreshOptions = ClusterTopologyRefreshOptions.builder()
+                .enablePeriodicRefresh(Duration.ofSeconds(300))
+                .enableAdaptiveRefreshTrigger(
+                        ClusterTopologyRefreshOptions.RefreshTrigger.MOVED_REDIRECT,
+                        ClusterTopologyRefreshOptions.RefreshTrigger.UNKNOWN_NODE,
+                        ClusterTopologyRefreshOptions.RefreshTrigger.UNCOVERED_SLOT)
+                .adaptiveRefreshTriggersTimeout(Duration.ofSeconds(60)).build();
 
-        if (Objects.nonNull(redisProperties.getLettuce()))
-            clientConfigBuilder.shutdownTimeout(redisProperties.getLettuce().getShutdownTimeout());
+        ClusterClientOptions options = ClusterClientOptions.builder()
+                .maxRedirects(5).topologyRefreshOptions(topologyRefreshOptions)
+                .validateClusterNodeMembership(false).build();
+
+        clientConfigBuilder.clientOptions(options);
 
         return clientConfigBuilder.build();
     }
